@@ -22,7 +22,7 @@ This is a full-stack web application built with **Laravel 10** (backend API) and
 git clone https://github.com/D-SharkCoder/My-Branch-Locator.git
 cd My-Branch-Locator
 ```
-- Open 2 terminal for setup
+- Open 2 terminals for setup
 ## Backend Installation (first terminal)
 ### 1. Install dependencies 
 ```bash
@@ -47,9 +47,6 @@ php artisan serve
 ---
 ## Frontend Installation (second terminal)
 ### 1. Install dependencies
-```bash
-
-```
 
 ```bash
 cd frontend
