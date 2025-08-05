@@ -14,7 +14,7 @@ const BranchModal: React.FC = () => {
     const { branchModal, setBranchModal } = context;
 
     const closeModal = () => {
-        setBranchModal(prev => ({ ...prev, isOpen: false }));
+        setBranchModal(prev => ({ ...prev, isOpen: false, isLoading: false }));
     };
 
     const handleOnChange = (key: keyof ModalBranch, value: string | number | boolean) => {
@@ -50,7 +50,7 @@ const BranchModal: React.FC = () => {
                 </div>
 
                 <div className="mt-4 text-right flex gap-2 justify-end">
-                    <Button color="success">Submit</Button>
+                    <Button color="success" disabled={branchModal.isLoading}>Submit</Button>
                     <Button color="primary" onClick={() => closeModal()}>Cancel</Button>
                 </div>
             </form>

@@ -22,8 +22,7 @@ const LocationModal: React.FC = () => {
         })
     }
     const { isLoaded } = useLoadScript({
-        googleMapsApiKey: "", // Or use a direct string
-        // googleMapsApiKey: "AIzaSyDAGGJtITWyco5g5t4mFeTJcWegyyy50eQ", // Or use a direct string
+        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY
     });
     if (mapCoordinates.lat == 0 && mapCoordinates.lng == 0) {
         return;

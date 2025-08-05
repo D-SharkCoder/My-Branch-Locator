@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Card from './common/Card';
 import Button from './common/Button';
 import { FaTrash, FaEdit, FaMap, FaPhone, FaLocationArrow } from 'react-icons/fa';
@@ -13,18 +13,20 @@ const BranchGridSection: React.FC = () => {
   if (!context) {
     throw new Error("BranchListContext must be used inside a BranchListContextProvider");
   }
-  const { branches, filter, setBranchModal, setCoordinates, setMapModal } = context;
+  const { branches, filter, setBranchModal, setCoordinates, setMapModal, getBranches } = context;
 
   const filteredBranches = branches.filter(
     (branch) => branch.status === (filter.status)
   );
 
   const openBranchModal = (branch: Branch) => {
-    setBranchModal({
+    setBranchModal(prev => ({
+      ...prev,
       ...branch,
       isOpen: true,
-      purpose: "update"
-    });
+      purpose: "update",
+      isLoading: false
+    }));
   };
 
   const selectBranchMap = (latitude :number, longitude :number) => {
@@ -33,7 +35,11 @@ const BranchGridSection: React.FC = () => {
       lng: longitude
     });
     setMapModal(true)
-  } 
+  }
+  useEffect(() => {
+    getBranches()
+  }
+  ,[filter]);
 
     return (
         <div className='flex flex-wrap gap-5 justify-center'>

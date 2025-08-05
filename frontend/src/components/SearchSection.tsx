@@ -14,17 +14,11 @@ const SearchSection: React.FC = () => {
     }
     const {setBranchModal, filter, setFilter} = context;
     const openBranchModal = () => {
-        setBranchModal({
-            name: '',
-            manager: '',
-            address: '',
-            phone: '',
-            lat: 0,
-            lng: 0,
-            status: true,
+        setBranchModal(prev => ({
+            ...prev,
             isOpen: true,
-            purpose: "new"
-        });
+            purpose: "new",
+        }));
     };
 
     const handleChangefilter = (key: keyof Filter, value: string | number | boolean) => {

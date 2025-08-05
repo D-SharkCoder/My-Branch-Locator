@@ -20,6 +20,8 @@ type BranchListContextType = {
   setCoordinates: React.Dispatch<React.SetStateAction<MapCoordinate>>;
   mapModal: boolean;
   setMapModal: React.Dispatch<React.SetStateAction<boolean>>;
+  getBranches: () => void;
+  upsertBranch: () => void;
 };
 
 export const BranchListContext = createContext<BranchListContextType | null>(null);
@@ -34,7 +36,8 @@ export default function BranchListContextProvider({children}: Props) {
       lng: 0,
       status: true,
       isOpen: false,
-      purpose: "new"
+      purpose: "new",
+      isLoading: false
     });
     const [mapModal, setMapModal] = useState<boolean>(false);
     const [filter, setFilter] = useState<Filter>({
@@ -48,48 +51,27 @@ export default function BranchListContextProvider({children}: Props) {
       lng: 0
     });
     
-    const [branches, setBranch] = useState<Branch[]>([
-        {
-          name: "North Caloocan",
-          manager: "Mark Anthony Santos",
-          address: "Phase 4, Stall 1 Langit Rd, Caloocan, 1428 Metro Manila",
-          phone: "+639090688481",
-          lat: 14.77868279164669,
-          lng: 121.0439676877257,
-          status: true
-        },
-        {
-          name: "Bagumbong Caloocan",
-          manager: "Mark Angelo Santos",
-          address: "Rainbow Village 5 Phase 2, Blk38 Lt4, beside Alfamart Rainbow Village, Rainbow Ave, Bagumbong, Caloocan, 1421",
-          phone: "+639670878808",
-          lat: 14.750896711557004,
-          lng: 121.03179981523148,
-          status: true
-        },
-        {
-          name: "Nova Plaza Mall",
-          manager: "Mark Adrian Santos",
-          address: "3rd Floor, Nova Plaza Mall, Quirino Hwy, Novaliches Proper, Quezon City, 1123 Metro Manila",
-          phone: "+639670878801",
-          lat: 14.722181516635802,
-          lng: 121.04862445519773,
-          status: true
-        },
-        {
-          name: "Talipapa, Quezon City",
-          manager: "Sheena Mae Banastas",
-          address: "Lot 21, Blk 5 Santa Sabina St, Quezon City, 1116 Metro Manila",
-          phone: "+639176316511",
-          lat: 14.690634365817415,
-          lng: 121.02957004445221,
-          status: true
-        },
-    
-    ]);
+    const [branches, setBranch] = useState<Branch[]>([]);
+
+    const getBranches = () :void => {
+      fetch('/api/test')
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => console.error('Fetch error:', err));
+    }
+
+    const upsertBranch = () :void => {
+      fetch('/api/test')
+          .then(res => {
+            console.log(res)
+            getBranches()
+          })
+          .catch(err => console.error('Fetch error:', err));
+    }
 
     return (
-        <BranchListContext.Provider value={{ branches, setBranch, branchModal, setBranchModal, filter, setFilter, mapCoordinates, setCoordinates, mapModal, setMapModal }}>
+        <BranchListContext.Provider value={{ branches, setBranch, branchModal, setBranchModal, filter, setFilter, mapCoordinates, setCoordinates, mapModal, setMapModal, getBranches, upsertBranch }}>
             {children}
         </BranchListContext.Provider>
     )

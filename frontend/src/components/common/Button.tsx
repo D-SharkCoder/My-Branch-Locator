@@ -21,7 +21,8 @@ const Button: React.FC<ButtonProps> = ({
   className = "",
   ...props
 }) => {
-  const baseClasses = "py-2 px-4 rounded-xl transition disabled:opacity-50";
+  const baseClasses =
+    "py-2 px-4 rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed";
   const finalClass = `${baseClasses} ${colorClasses[color]} ${className}`;
 
   return (

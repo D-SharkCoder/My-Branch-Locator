@@ -10,5 +10,6 @@ export type Branch = MapCoordinate & {
 
 export type ModalBranch = Branch & {
     isOpen: boolean,
-    purpose: "new" | "update"
+    purpose: "new" | "update",
+    isLoading: boolean
 }
