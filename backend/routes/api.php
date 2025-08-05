@@ -15,4 +15,4 @@ use App\Http\Controllers\BranchController;
 |
 */
 
-Route::middleware('json.headers')->resource('branches', BranchController::class);
+Route::middleware(['throttle:60:1' ,'json.headers'])->resource('branches', BranchController::class);

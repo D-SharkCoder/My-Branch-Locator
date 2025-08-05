@@ -15,9 +15,9 @@ const BranchGridSection: React.FC = () => {
   }
   const { branches, filter, setBranchModal, setCoordinates, setMapModal, getBranches, deleteBranch } = context;
 
-  const filteredBranches = branches.filter(
+  const filteredBranches = branches.length > 0 ? branches.filter(
     (branch) => branch.status == (filter.status)
-  );
+  ) : [];
 
   const openBranchModal = (branch: Branch) => {
     setBranchModal(prev => ({
