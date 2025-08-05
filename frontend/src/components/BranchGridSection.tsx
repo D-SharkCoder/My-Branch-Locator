@@ -48,36 +48,36 @@ const BranchGridSection: React.FC = () => {
   ,[]);
 
     return (
-        <div className='flex flex-wrap gap-5 justify-center'>
+        <div className='flex flex-wrap justify-center gap-5' data-testid="BranchGridListing">
             {filteredBranches.length > 0 ? 
               filteredBranches.map((branch :Branch, index :number)=>{
-                return <Card className='w-[300px] flex flex-col' key={index}>
+                return <Card className='w-[300px] flex flex-col' key={index} data-testid="BranchCard">
                 <div className='flex flex-col flex-1'>
-                  <h1 className='font-bold text-xl mb-2'>{branch.name}</h1>
+                  <h1 className='mb-2 text-xl font-bold'>{branch.name}</h1>
                   <div className='flex flex-col flex-grow gap-1 text-sm'>
                     <div className='flex flex-row'>
-                      <div className='w-1/6 text-xs flex align-middle mt-1'><FaPerson/></div>
+                      <div className='flex w-1/6 mt-1 text-xs align-middle'><FaPerson/></div>
                       <p className='w-5/6'>{branch.manager}</p>
                     </div>
                     <div className='flex flex-row'>
-                      <div className='w-1/6 text-xs flex align-middle mt-1'><FaPhone/>:</div>
+                      <div className='flex w-1/6 mt-1 text-xs align-middle'><FaPhone/>:</div>
                       <p className='w-5/6'>{branch.phone}</p>
                     </div>
                     <div className='flex flex-row'>
-                      <div className='w-1/6 text-xs flex align-middle mt-1'><FaLocationArrow/></div>
+                      <div className='flex w-1/6 mt-1 text-xs align-middle'><FaLocationArrow/></div>
                       <p className='w-5/6'>{branch.address}</p>
                     </div>
                     <div className='flex flex-row'>
-                      <div className='w-1/6 text-xs flex align-middle mt-1'><FaMap/></div>
+                      <div className='flex w-1/6 mt-1 text-xs align-middle'><FaMap/></div>
                       <p className='w-5/6'>{branch.lat}, {branch.lng}</p>
                     </div>
                     <div className="flex flex-row">
-                      <div className='w-1/6 text-xs flex align-middle mt-1'><FaCircleCheck/></div>
+                      <div className='flex w-1/6 mt-1 text-xs align-middle'><FaCircleCheck/></div>
                       <p className={branch.status ? 'text-green-500' : 'text-red-500'}>{branch.status ? 'Active' : 'Inactive'}</p>
                     </div>
                   </div>
                 </div>
-                <div className='flex gap-1 justify-end mt-2'>
+                <div className='flex justify-end gap-1 mt-2'>
                   <Button color={'primary'} onClick={() => selectBranchMap(branch.lat, branch.lng)}><FaMap/></Button>
                   <Button color={'secondary'} onClick={() => openBranchModal(branch)} ><FaEdit/></Button>
                   <Button color={'danger'} onClick={() => handleDelete(branch)}><FaTrash/></Button>
