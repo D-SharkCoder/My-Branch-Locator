@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { BranchListContext } from "../contexts/branch-listing-context";
 import Modal from "./common/Modal";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
@@ -21,6 +21,17 @@ const LocationModal: React.FC = () => {
             lng: 0
         })
     }
+
+    const mapRenderFlag = useRef(false)
+    useEffect(() => {
+        if (mapCoordinates) {
+            if (!mapRenderFlag.current) {
+                mapRenderFlag.current = true;
+                return;
+            }
+        }
+    }, [mapCoordinates])
+
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY
     });
