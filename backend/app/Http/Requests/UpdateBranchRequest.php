@@ -23,12 +23,12 @@ class UpdateBranchRequest extends FormRequest
     {
         return [
             'id'      => 'required',
-            'name' => ['required', 'string', 'max:255'],
-            'manager' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z ]+$/'],
-            'phone'   => ['required', 'max:20', 'regex:/^\+?[0-9]+$/'],
-            'address' => ['required', 'string', 'max:255'],
-            'lat'     => ['required', 'numeric'],
-            'lng'     => ['required', 'numeric'],
+            'name' => ['nullable', 'string', 'max:255'],
+            'manager' => ['nullable', 'string', 'max:255', 'regex:/^[\p{L}\p{M}\s\.\'\-]+$/u'],
+            'phone'   => ['nullable', 'max:20', 'regex:/^\+?[0-9]+$/'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'lat'     => ['nullable', 'numeric'],
+            'lng'     => ['nullable', 'numeric'],
             'status'  => ['required', 'boolean'],
         ];
     }
@@ -37,7 +37,7 @@ class UpdateBranchRequest extends FormRequest
     {
         return [
             'id' => "The branch cannot be updated",
-            'manager.regex' => 'The manager name may only contain letters and spaces.',
+            'manager.regex' => 'The manager name contains invalid characters.',
             'phone.regex' => 'The phone number may only contain digits and an optional leading plus sign.',
             'lat.numeric' => 'Latitude must be a valid number.',
             'lng.numeric' => 'Longitude must be a valid number.',

@@ -13,7 +13,10 @@ class BranchController extends Controller
 {
     public function index(BranchListRequest $request)
     {
-        extract($request->only(['text', 'for', 'sort']));
+        $text = $request->input('text') ?? null;
+        $for = $request->input('for') ?? null;
+        $sort = $request->input('sort') ?? null;
+        
         return Branch::when($text && $for == 'any', function ($query) use ($text) {
             $query->where("name", 'LIKE', "%${text}%")
             ->orWhere("manager", "LIKE", "%${text}%")

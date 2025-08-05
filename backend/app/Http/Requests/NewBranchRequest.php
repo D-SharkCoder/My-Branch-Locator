@@ -23,7 +23,7 @@ class NewBranchRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'manager' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z ]+$/'],
+            'manager' => ['nullable', 'string', 'max:255', 'regex:/^[\p{L}\p{M}\s\.\'\-]+$/u'],
             'phone'   => ['required', 'string', 'max:20', 'regex:/^\+?[0-9]+$/'],
             'address' => ['required', 'string', 'max:255'],
             'lat'     => ['required', 'numeric'],
@@ -35,7 +35,7 @@ class NewBranchRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'manager.regex' => 'The manager name may only contain letters and spaces.',
+            'manager.regex' => 'The manager name contains invalid characters.',
             'phone.regex' => 'The phone number may only contain digits and an optional leading plus sign.',
             'lat.numeric' => 'Latitude must be a valid number.',
             'lng.numeric' => 'Longitude must be a valid number.',
