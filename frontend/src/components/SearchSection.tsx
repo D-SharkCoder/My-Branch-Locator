@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Input from "./common/Input";
 import Select from "./common/Select";
 import Button from "./common/Button";
@@ -12,7 +12,7 @@ const SearchSection: React.FC = () => {
     if (!context) {
         throw new Error("BranchListContext must be used inside a BranchListContextProvider");
     }
-    const {setBranchModal, filter, setFilter} = context;
+    const {setBranchModal, filter, setFilter, defaultFilter, getBranches} = context;
     const openBranchModal = () => {
         setBranchModal(prev => ({
             ...prev,
@@ -21,6 +21,24 @@ const SearchSection: React.FC = () => {
             purpose: "new",
         }));
     };
+
+    const [debouncedFilter, setDebouncedFilter] = useState<Filter>(defaultFilter);
+
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedFilter(filter);
+        }, 1000); // 1 second debounce
+
+        return () => clearTimeout(timer);
+    }, [filter]);
+
+    useEffect(() => {
+        if (debouncedFilter) {
+            getBranches()
+        }
+    }, [debouncedFilter]);
+
 
     const handleChangefilter = (key: keyof Filter, value: string | number | boolean) => {
         setFilter(prev => ({ ...prev, [key]: value }));

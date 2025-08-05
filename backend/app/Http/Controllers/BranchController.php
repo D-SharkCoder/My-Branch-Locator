@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BranchListRequest;
 use App\Http\Requests\NewBranchRequest;
 use App\Http\Requests\UpdateBranchRequest;
 use App\Models\Branch;
@@ -10,9 +11,22 @@ use Illuminate\Http\Response;
 
 class BranchController extends Controller
 {
-    public function index()
+    public function index(BranchListRequest $request)
     {
-        return Branch::all();
+        extract($request->only(['text', 'for', 'sort']));
+        return Branch::when($text && $for == 'any', function ($query) use ($text) {
+            $query->where("name", 'LIKE', "%${text}%")
+            ->orWhere("manager", "LIKE", "%${text}%")
+            ->orWhere("phone", "LIKE", "%${text}%")
+            ->orWhere("address", "LIKE", "%${text}%");
+        })
+        ->when($text && $for != 'any', function ($query) use ($for, $text) {
+            $query->where($for, 'LIKE', "%${text}%");
+        })
+        ->when(in_array($sort, ['asc', 'desc']), function ($query) use ($sort) {
+            $query->orderBy('name', $sort);
+        })
+        ->get();
     }
 
     public function store(NewBranchRequest $request)

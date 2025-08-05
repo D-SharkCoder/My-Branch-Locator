@@ -18,6 +18,7 @@ type BranchListContextType = {
   defaultBranchModal: ModalBranch;
   filter: Filter;
   setFilter: React.Dispatch<React.SetStateAction<Filter>>;
+  defaultFilter: Filter;
   mapCoordinates: MapCoordinate;
   setCoordinates: React.Dispatch<React.SetStateAction<MapCoordinate>>;
   mapModal: boolean;
@@ -60,10 +61,10 @@ const defaultMapCoordinates: MapCoordinate = {
   lng: 0
 }
 
-const defaultFilter :Filter = {
+export const defaultFilter :Filter = {
   text: '',
   for: 'any',
-  sort: 'asc',
+  sort: 'any',
   status: true,
 }
 export const BranchListContext = createContext<BranchListContextType | null>(null);
@@ -91,7 +92,7 @@ export default function BranchListContextProvider({children}: Props) {
       const notif = toast.loading("Loading branches...")
       await processRequest({
         method: "GET",
-        url: "/api/branches"
+        url: `/api/branches?text=${filter.text}&for=${filter.for}&sort=${filter.sort}`,
       })
       .then(res => res.json())
       .then(data => {
@@ -186,7 +187,7 @@ export default function BranchListContextProvider({children}: Props) {
     }
 
     return (
-        <BranchListContext.Provider value={{ branches, setBranch, branchModal, setBranchModal, defaultBranchModal, filter, setFilter, mapCoordinates, setCoordinates, mapModal, setMapModal, validation, setValidation, getBranches, createNewBranch, updateBranch, deleteBranch }}>
+        <BranchListContext.Provider value={{ branches, setBranch, branchModal, setBranchModal, defaultBranchModal, filter, setFilter, defaultFilter, mapCoordinates, setCoordinates, mapModal, setMapModal, validation, setValidation, getBranches, createNewBranch, updateBranch, deleteBranch }}>
             {children}
         </BranchListContext.Provider>
     )

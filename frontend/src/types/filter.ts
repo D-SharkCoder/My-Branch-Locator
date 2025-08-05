@@ -1,6 +1,6 @@
 export type Filter = {
   text: string;
   for: "any" | "name" | "manager" | "location" | "phone";
-  sort: "asc" | "desc";
+  sort: "any" | "asc" | "desc";
   status: boolean 
 }

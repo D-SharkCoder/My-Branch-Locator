@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import Modal from "./common/Modal";
 import { BranchListContext } from "../contexts/branch-listing-context";
 import Input from "./common/Input";
