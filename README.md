@@ -60,3 +60,18 @@ npm install
 npm run build
 npm run preview
 ```
+
+
+---
+# Executing tests
+### 1. Backend
+```bash
+cd backend
+php artisan test
+```
+
+### 2. Frontend
+```bash
+cd frontend
+npm test
+```
