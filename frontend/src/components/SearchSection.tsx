@@ -16,6 +16,7 @@ const SearchSection: React.FC = () => {
     const openBranchModal = () => {
         setBranchModal(prev => ({
             ...prev,
+            id: null,
             isOpen: true,
             purpose: "new",
         }));

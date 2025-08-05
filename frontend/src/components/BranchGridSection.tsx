@@ -13,10 +13,10 @@ const BranchGridSection: React.FC = () => {
   if (!context) {
     throw new Error("BranchListContext must be used inside a BranchListContextProvider");
   }
-  const { branches, filter, setBranchModal, setCoordinates, setMapModal, getBranches } = context;
+  const { branches, filter, setBranchModal, setCoordinates, setMapModal, getBranches, deleteBranch } = context;
 
   const filteredBranches = branches.filter(
-    (branch) => branch.status === (filter.status)
+    (branch) => branch.status == (filter.status)
   );
 
   const openBranchModal = (branch: Branch) => {
@@ -36,6 +36,12 @@ const BranchGridSection: React.FC = () => {
     });
     setMapModal(true)
   }
+
+  const handleDelete = (branch: Branch) => {
+    if (branch.id) {
+      deleteBranch(branch.id)
+    }
+  }
   useEffect(() => {
     getBranches()
   }
@@ -45,7 +51,7 @@ const BranchGridSection: React.FC = () => {
         <div className='flex flex-wrap gap-5 justify-center'>
             {filteredBranches.length > 0 ? 
               filteredBranches.map((branch :Branch, index :number)=>{
-              return <Card className='w-[300px] flex flex-col' key={index}>
+                return <Card className='w-[300px] flex flex-col' key={index}>
                 <div className='flex flex-col flex-1'>
                   <h1 className='font-bold text-xl mb-2'>{branch.name}</h1>
                   <div className='flex flex-col flex-grow gap-1 text-sm'>
@@ -74,7 +80,7 @@ const BranchGridSection: React.FC = () => {
                 <div className='flex gap-1 justify-end mt-2'>
                   <Button color={'primary'} onClick={() => selectBranchMap(branch.lat, branch.lng)}><FaMap/></Button>
                   <Button color={'secondary'} onClick={() => openBranchModal(branch)} ><FaEdit/></Button>
-                  <Button color={'danger'}><FaTrash/></Button>
+                  <Button color={'danger'} onClick={() => handleDelete(branch)}><FaTrash/></Button>
                 </div>
               </Card>
             }) : 
