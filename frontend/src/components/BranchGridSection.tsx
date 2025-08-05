@@ -42,6 +42,10 @@ const BranchGridSection: React.FC = () => {
       deleteBranch(branch.id)
     }
   }
+  useEffect(() => {
+    getBranches()
+  }
+  ,[]);
 
     return (
         <div className='flex flex-wrap gap-5 justify-center'>

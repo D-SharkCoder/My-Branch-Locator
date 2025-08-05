@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import Input from "./common/Input";
 import Select from "./common/Select";
 import Button from "./common/Button";
@@ -24,17 +24,26 @@ const SearchSection: React.FC = () => {
 
     const [debouncedFilter, setDebouncedFilter] = useState<Filter>(defaultFilter);
 
-
+    const didMountFilterRef = useRef(false);
     useEffect(() => {
+        if (!didMountFilterRef.current) {
+            didMountFilterRef.current = true;
+            return;
+        }
         const timer = setTimeout(() => {
             setDebouncedFilter(filter);
-        }, 1000); // 1 second debounce
-
+        }, 1000);
+        
         return () => clearTimeout(timer);
     }, [filter]);
-
+    
+    const didMountDebouncedRef = useRef(false);
     useEffect(() => {
         if (debouncedFilter) {
+            if (!didMountDebouncedRef.current) {
+                didMountDebouncedRef.current = true;
+                return;
+            }
             getBranches()
         }
     }, [debouncedFilter]);
