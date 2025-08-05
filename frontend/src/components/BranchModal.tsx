@@ -11,10 +11,10 @@ const BranchModal: React.FC = () => {
     if (!context) {
         throw new Error("BranchListContext must be used inside a BranchListContextProvider");
     }
-    const { branchModal, setBranchModal, validation, createNewBranch, setValidation, updateBranch } = context;
+    const { branchModal, setBranchModal, validation, createNewBranch, setValidation, updateBranch, defaultBranchModal } = context;
 
     const closeModal = () => {
-        setBranchModal(prev => ({ ...prev, isOpen: false, isLoading: false }));
+        setBranchModal({...defaultBranchModal, isOpen: false, isLoading: false });
         setValidation([]);
     };
 

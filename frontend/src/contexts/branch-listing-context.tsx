@@ -1,4 +1,5 @@
 import React, { createContext, useState } from "react";
+import toast from "react-hot-toast";
 
 import type {ReactNode} from "react";
 import type { Branch } from "../types/branch";
@@ -14,6 +15,7 @@ type BranchListContextType = {
   setBranch: React.Dispatch<React.SetStateAction<Branch[]>>;
   branchModal: ModalBranch;
   setBranchModal: React.Dispatch<React.SetStateAction<ModalBranch>>;
+  defaultBranchModal: ModalBranch;
   filter: Filter;
   setFilter: React.Dispatch<React.SetStateAction<Filter>>;
   mapCoordinates: MapCoordinate;
@@ -40,44 +42,45 @@ type HttpRequest = {
   body? :any
 }
 
+export const defaultBranchModal: ModalBranch = {
+  name: "",
+  manager: "",
+  address: "",
+  phone: "",
+  lat: 0,
+  lng: 0,
+  status: true,
+  isOpen: false,
+  purpose: "new",
+  isLoading: false
+}
+
+const defaultMapCoordinates: MapCoordinate = {
+  lat: 0,
+  lng: 0
+}
+
+const defaultFilter :Filter = {
+  text: '',
+  for: 'any',
+  sort: 'asc',
+  status: true,
+}
 export const BranchListContext = createContext<BranchListContextType | null>(null);
 
 export default function BranchListContextProvider({children}: Props) {
-    const [branchModal, setBranchModal] = useState<ModalBranch>({
-      name: "",
-      manager: "",
-      address: "",
-      phone: "",
-      lat: 0,
-      lng: 0,
-      status: true,
-      isOpen: false,
-      purpose: "new",
-      isLoading: false
-    });
+    const [branchModal, setBranchModal] = useState<ModalBranch>(defaultBranchModal);
     const [mapModal, setMapModal] = useState<boolean>(false);
-    const [filter, setFilter] = useState<Filter>({
-      text: '',
-      for: 'any',
-      sort: 'asc',
-      status: true,
-    });
-    const [mapCoordinates, setCoordinates] = useState<MapCoordinate>({
-      lat: 0,
-      lng: 0
-    });
-    
+    const [filter, setFilter] = useState<Filter>(defaultFilter);
+    const [mapCoordinates, setCoordinates] = useState<MapCoordinate>(defaultMapCoordinates);
     const [branches, setBranch] = useState<Branch[]>([]);
-
     const [validation, setValidation] = useState<validationItem[]>([])
 
     function parseLaravelValidationErrors(errorResponse: any): validationItem[] {
       if (!errorResponse || typeof errorResponse !== "object" || !errorResponse.errors) {
         return [];
       }
-
       const errors = errorResponse.errors;
-
       return Object.entries(errors).map(([key, messages]) => ({
         key,
         error: Array.isArray(messages) && messages.length > 0 ? messages[0] : "Invalid input",
@@ -85,14 +88,15 @@ export default function BranchListContextProvider({children}: Props) {
     }
 
     const getBranches = async () :Promise<void> => {
+      const notif = toast.loading("Loading branches...")
       await processRequest({
         method: "GET",
         url: "/api/branches"
       })
       .then(res => res.json())
       .then(data => {
+        toast.success("Done", {id: notif})
         setBranch(data)
-        console.log(data); // ✅ use the data here
       })
       .catch(err => console.error('Fetch error:', err));
     }
@@ -111,6 +115,7 @@ export default function BranchListContextProvider({children}: Props) {
     const createNewBranch = async () :Promise<void> => {
       if (branchModal.isLoading) return;
       setBranchModal(prev => ({...prev, isLoading: true}))
+      const notif = toast.loading("Creating new branch...")
       await processRequest({
         method: "POST",
         url: "/api/branches",
@@ -124,17 +129,20 @@ export default function BranchListContextProvider({children}: Props) {
           const validationErrors = parseLaravelValidationErrors(data);
           setValidation(validationErrors);
           setBranchModal(prev => ({...prev, isLoading: false}))
+          toast.error("Failed to create new branch", {id: notif});
           return
         }
         getBranches()
-        setValidation([]);
-        setBranchModal(prev => ({...prev, isLoading: false, isOpen: false}))
+        toast.success("Successfully created new branch", {id: notif});
+        setValidation([])
+        setBranchModal({...defaultBranchModal, isLoading: false, isOpen: false})
       })
       .catch(err => console.error('Fetch error:', err));
     }
 
     const updateBranch = async () :Promise<void> => {
       if (branchModal.isLoading) return;
+      const notif = toast.loading("Updating the branch...")
       setBranchModal(prev => ({...prev, isLoading: true}))
       await processRequest({
         method: "PUT",
@@ -148,28 +156,37 @@ export default function BranchListContextProvider({children}: Props) {
         if (!res.ok && data.errors) {
           const validationErrors = parseLaravelValidationErrors(data);
           setValidation(validationErrors);
-          setBranchModal(prev => ({...prev, isLoading: false}))
+          setBranchModal({...defaultBranchModal, isLoading: false, isOpen: false})
+          toast.error("Failed to update branch", {id: notif});
           return
         }
         getBranches()
+        toast.success("Successfully updated branch", {id: notif});
         setValidation([]);
-        setBranchModal(prev => ({...prev, isLoading: false, isOpen: false}))
+        setBranchModal({...defaultBranchModal, isLoading: false, isOpen: false})
       })
       .catch(err => console.error('Fetch error:', err));
     }
 
     const deleteBranch = async (id: number) :Promise<void> => {
+      const notif = toast.loading("Deleting the branch...")
       processRequest({
         method: "DELETE",
         url: `api/branches/${id}`
       })
-      .then(async () => {
-        getBranches()
+      .then(async (res) => {
+        await getBranches()
+        console.log(res)
+        if (res.status == 500) {
+          return toast.error("Failed to delete branch", {id: notif});
+        }
+        toast.success("Successfully delete branch", {id: notif});
       })
+      .catch(err => console.error('Fetch error:', err))
     }
 
     return (
-        <BranchListContext.Provider value={{ branches, setBranch, branchModal, setBranchModal, filter, setFilter, mapCoordinates, setCoordinates, mapModal, setMapModal, validation, setValidation, getBranches, createNewBranch, updateBranch, deleteBranch }}>
+        <BranchListContext.Provider value={{ branches, setBranch, branchModal, setBranchModal, defaultBranchModal, filter, setFilter, mapCoordinates, setCoordinates, mapModal, setMapModal, validation, setValidation, getBranches, createNewBranch, updateBranch, deleteBranch }}>
             {children}
         </BranchListContext.Provider>
     )
