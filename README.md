@@ -19,7 +19,7 @@ This is a full-stack web application built with **Laravel 10** (backend API) and
 #### Clone the Repository
 
 ```bash
-git clone https://github.com/D-SharkCoder/My-Branch-Locator
+git clone https://github.com/D-SharkCoder/My-Branch-Locator.git
 cd My-Branch-Locator
 ```
 
