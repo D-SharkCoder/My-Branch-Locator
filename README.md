@@ -19,11 +19,11 @@ This is a full-stack web application built with **Laravel 10** (backend API) and
 #### Clone the Repository
 
 ```bash
-git clone https://github.com/D-SharkCoder/My-Branch-Locator
+git clone https://github.com/D-SharkCoder/My-Branch-Locator.git
 cd My-Branch-Locator
 ```
-
-## Backend Installation
+- Open 2 terminals for setup
+## Backend Installation (first terminal)
 ### 1. Install dependencies 
 ```bash
 cd backend
@@ -45,11 +45,8 @@ php artisan migrate:fresh
 php artisan serve
 ```
 ---
-## Frontend Installation
+## Frontend Installation (second terminal)
 ### 1. Install dependencies
-```bash
-
-```
 
 ```bash
 cd frontend
@@ -62,4 +59,19 @@ npm install
 ```bash
 npm run build
 npm run preview
+```
+
+
+---
+# Executing tests
+### 1. Backend
+```bash
+cd backend
+php artisan test
+```
+
+### 2. Frontend
+```bash
+cd frontend
+npm test
 ```
