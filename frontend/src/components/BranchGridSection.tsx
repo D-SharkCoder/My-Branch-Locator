@@ -78,7 +78,7 @@ const BranchGridSection: React.FC = () => {
                   </div>
                 </div>
                 <div className='flex justify-end gap-1 mt-2'>
-                  <Button color={'primary'} onClick={() => selectBranchMap(branch.lat, branch.lng)}><FaMap/></Button>
+                  <Button color={'primary'} disabled={branch.lat == 0 && branch.lng == 0} onClick={() => selectBranchMap(branch.lat, branch.lng)}><FaMap/></Button>
                   <Button color={'secondary'} onClick={() => openBranchModal(branch)} ><FaEdit/></Button>
                   <Button color={'danger'} onClick={() => handleDelete(branch)}><FaTrash/></Button>
                 </div>
