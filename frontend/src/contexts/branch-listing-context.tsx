@@ -87,7 +87,18 @@ export default function BranchListContextProvider({children}: Props) {
         error: Array.isArray(messages) && messages.length > 0 ? messages[0] : "Invalid input",
       }));
     }
-
+    
+    const processRequest = async (param :HttpRequest) :Promise<Response> => {
+      return await fetch(param.url, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Accept": "application/json"
+        },
+        method: param.method,
+        body: param.body
+      })
+    }
+    
     const getBranches = async () :Promise<void> => {
       const notif = toast.loading("Loading branches...")
       await processRequest({
@@ -102,16 +113,6 @@ export default function BranchListContextProvider({children}: Props) {
       .catch(err => console.error('Fetch error:', err));
     }
 
-    const processRequest = async (param :HttpRequest) :Promise<Response> => {
-      return await fetch(param.url, {
-        headers: {
-          'Content-Type': 'application/json',
-          "Accept": "application/json"
-        },
-        method: param.method,
-        body: param.body
-      })
-    }
 
     const createNewBranch = async () :Promise<void> => {
       if (branchModal.isLoading) return;

@@ -21,20 +21,10 @@ const LocationModal: React.FC = () => {
             lng: 0
         })
     }
-
-    const mapRenderFlag = useRef(false)
-    useEffect(() => {
-        if (mapCoordinates) {
-            if (!mapRenderFlag.current) {
-                mapRenderFlag.current = true;
-                return;
-            }
-        }
-    }, [mapCoordinates])
-
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY
     });
+
     if (mapCoordinates.lat == 0 && mapCoordinates.lng == 0) {
         return;
     }
@@ -49,12 +39,6 @@ const LocationModal: React.FC = () => {
             : ''}
         </>
     )
-
-    
-
-
-//   return (
-//   );
 };
 
 export default LocationModal;

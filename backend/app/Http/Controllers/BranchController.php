@@ -26,7 +26,10 @@ class BranchController extends Controller
         ->when($text && $for != 'any', function ($query) use ($for, $text) {
             $query->where($for, 'LIKE', "%${text}%");
         })
-        ->when(in_array($sort, ['asc', 'desc']), function ($query) use ($sort) {
+        ->when(in_array($sort, ['asc', 'desc']) && $for != 'any', function ($query) use ($sort, $for) {
+            $query->orderBy($for, $sort);
+        })
+        ->when(in_array($sort, ['asc', 'desc']) && $for == 'any', function ($query) use ($sort) {
             $query->orderBy('name', $sort);
         })
         ->get();
