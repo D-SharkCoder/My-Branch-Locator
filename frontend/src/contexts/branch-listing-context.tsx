@@ -157,7 +157,7 @@ export default function BranchListContextProvider({children}: Props) {
         if (!res.ok && data.errors) {
           const validationErrors = parseLaravelValidationErrors(data);
           setValidation(validationErrors);
-          setBranchModal({...defaultBranchModal, isLoading: false, isOpen: false})
+          setBranchModal(prev => ({...prev, isLoading: false}))
           toast.error("Failed to update branch", {id: notif});
           return
         }

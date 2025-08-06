@@ -23,7 +23,7 @@ class NewBranchRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'manager' => ['nullable', 'string', 'max:255', 'regex:/^[\p{L}\p{M}\s\.\'\-]+$/u'],
+            'manager' => ['required', 'string', 'max:255', 'regex:/^[\p{L}\p{M}\s\.\'\-]+$/u'],
             'phone'   => ['required', 'string', 'max:20', 'regex:/^\+?[0-9]+$/'],
             'address' => ['required', 'string', 'max:255'],
             'lat'     => ['required', 'numeric'],

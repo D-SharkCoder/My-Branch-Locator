@@ -50,7 +50,12 @@ class BranchTest extends TestCase
         $branch = Branch::factory()->create();
         $updateData = [
             'id' => $branch->id,
-            'name' => 'Updated Branch',
+            'name' => fake()->city(),
+            'manager' => fake()->name(),
+            'phone' => fake()->numerify("+63##########"),
+            'address' => fake()->address(),
+            'lat' => fake()->numerify("##.####"),
+            'lng' => fake()->numerify("##.####"),
             'status' => fake()->boolean()
         ];
 

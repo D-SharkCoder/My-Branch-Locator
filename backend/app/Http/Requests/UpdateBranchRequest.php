@@ -23,12 +23,12 @@ class UpdateBranchRequest extends FormRequest
     {
         return [
             'id'      => 'required',
-            'name' => ['nullable', 'string', 'max:255'],
-            'manager' => ['nullable', 'string', 'max:255', 'regex:/^[\p{L}\p{M}\s\.\'\-]+$/u'],
-            'phone'   => ['nullable', 'max:20', 'regex:/^\+?[0-9]+$/'],
-            'address' => ['nullable', 'string', 'max:255'],
-            'lat'     => ['nullable', 'numeric'],
-            'lng'     => ['nullable', 'numeric'],
+            'name' => ['required', 'string', 'max:255'],
+            'manager' => ['required', 'string', 'max:255', 'regex:/^[\p{L}\p{M}\s\.\'\-]+$/u'],
+            'phone'   => ['required', 'max:20', 'regex:/^\+?[0-9]+$/'],
+            'address' => ['required', 'string', 'max:255'],
+            'lat'     => ['required', 'numeric'],
+            'lng'     => ['required', 'numeric'],
             'status'  => ['required', 'boolean'],
         ];
     }
