@@ -38,6 +38,9 @@ const BranchGridSection: React.FC = () => {
   }
 
   const handleDelete = (branch: Branch) => {
+    if (!confirm("Are you sure?")) {
+      return
+    }
     if (branch.id) {
       deleteBranch(branch.id)
     }

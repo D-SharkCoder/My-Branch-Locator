@@ -177,7 +177,6 @@ export default function BranchListContextProvider({children}: Props) {
       })
       .then(async (res) => {
         await getBranches()
-        console.log(res)
         if (res.status == 500) {
           return toast.error("Failed to delete branch", {id: notif});
         }
