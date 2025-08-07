@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext } from "react";
 import { BranchListContext } from "../contexts/branch-listing-context";
 import Modal from "./common/Modal";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
